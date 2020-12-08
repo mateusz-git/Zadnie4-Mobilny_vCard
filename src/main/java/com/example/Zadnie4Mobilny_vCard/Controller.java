@@ -1,8 +1,12 @@
 package com.example.Zadnie4Mobilny_vCard;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.jsoup.nodes.Document;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,7 +18,7 @@ import java.util.List;
 public class Controller {
     @GetMapping("/getAllProfession")
     public void getAllProfession() throws IOException {
-        String url1 = "https://panoramafirm.pl/hydraulik/firmy,1.html";
+        String url1 = "https://panoramafirm.pl/szukaj?k=hydraulik&l=";
         getProfessionList(url1);
     }
 
@@ -29,7 +33,14 @@ public class Controller {
             fromWebsite.append(line);
         }
         String htmlContent = fromWebsite.toString();
-        System.out.println(htmlContent);
+        Document document = Jsoup.parse(htmlContent);
+        Elements element = document.select("li");
+        Elements name = element.select("h2");
+       for (Element element2 : name) {
+            System.out.println(element2.text());
+        }
+
+        System.out.println("END");
         return null;
     }
 }
