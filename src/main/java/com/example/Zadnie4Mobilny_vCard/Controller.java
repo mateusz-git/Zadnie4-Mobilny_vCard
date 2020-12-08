@@ -19,7 +19,18 @@ public class Controller {
     @GetMapping("/getAllProfession")
     public void getAllProfession() throws IOException {
         String url1 = "https://panoramafirm.pl/szukaj?k=hydraulik&l=";
-        getProfessionList(url1);
+        List<ProfessionDetails> professionList = getProfessionList(url1);
+        createVCard(professionList);
+    }
+
+    private String createVCard(List<ProfessionDetails> professionList) {
+        ProfessionDetails oneProfessionDetails = professionList.get(0);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("BEGIN:VCARD\n")
+                .append("N:" + oneProfessionDetails.getName())
+                .append("TEL;WORK;VOICE:" + oneProfessionDetails.getPhone());
+
+        return stringBuilder.toString();
     }
 
     private List<ProfessionDetails> getProfessionList(String url1) throws IOException {
@@ -52,7 +63,6 @@ public class Controller {
         for (ProfessionDetails professionDetails : professionDetailsList) {
             System.out.println(professionDetails);
         }
-
         return professionDetailsList;
     }
 }
