@@ -36,7 +36,8 @@ public class Controller {
         Document document = Jsoup.parse(htmlContent);
         Elements element = document.select("li");
         Elements name = element.select("h2");
-       for (Element element2 : name) {
+        Elements address = element.select("div.address");
+       for (Element element2 : address) {
             System.out.println(element2.text());
         }
 
