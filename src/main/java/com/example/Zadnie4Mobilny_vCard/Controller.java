@@ -37,8 +37,16 @@ public class Controller {
         Elements element = document.select("li");
         Elements name = element.select("h2");
         Elements address = element.select("div.address");
-       for (Element element2 : address) {
-            System.out.println(element2.text());
+        Elements emailAndPhone = element.select("div.item");
+        Elements phone = emailAndPhone.select("a.icon-telephone");
+        Elements email = emailAndPhone.select("a.ajax-modal-link");
+        for (Element element2 : phone) {
+
+           System.out.println(element2.attr("title"));
+        }
+        for (Element element2 : email) {
+
+           System.out.println(element2.attr("data-company-email"));
         }
 
         System.out.println("END");
