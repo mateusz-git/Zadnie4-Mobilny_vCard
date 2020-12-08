@@ -1,17 +1,17 @@
 package com.example.Zadnie4Mobilny_vCard;
 
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.jsoup.nodes.Document;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,16 +40,19 @@ public class Controller {
         Elements emailAndPhone = element.select("div.item");
         Elements phone = emailAndPhone.select("a.icon-telephone");
         Elements email = emailAndPhone.select("a.ajax-modal-link");
-        for (Element element2 : phone) {
 
-           System.out.println(element2.attr("title"));
+        List<ProfessionDetails> professionDetailsList = new ArrayList<>();
+        for (int i = 0; i < name.size(); i++) {
+            professionDetailsList.add(new ProfessionDetails(name.get(i).text(),
+                    address.get(i).text(),
+                    phone.get(i).attr("title"),
+                    email.get(i).attr("data-company-email")));
         }
-        for (Element element2 : email) {
 
-           System.out.println(element2.attr("data-company-email"));
+        for (ProfessionDetails professionDetails : professionDetailsList) {
+            System.out.println(professionDetails);
         }
 
-        System.out.println("END");
-        return null;
+        return professionDetailsList;
     }
 }
