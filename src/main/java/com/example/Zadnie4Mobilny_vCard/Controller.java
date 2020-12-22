@@ -8,6 +8,8 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
@@ -20,9 +22,9 @@ import java.util.List;
 
 @RestController
 public class Controller {
-    @GetMapping("/getAllProfession")
-    public ResponseEntity getAllProfession() throws IOException {
-        String url1 = "https://panoramafirm.pl/szukaj?k=hydraulik&l=";
+    @GetMapping("/getAllProfession/{k}")
+    public ResponseEntity getAllProfession(@PathVariable String k) throws IOException {
+        String url1 = "https://panoramafirm.pl/szukaj?k=" + k + "&l=";
         List<ProfessionDetails> professionList = getProfessionList(url1);
         String vCard = createVCard(professionList.get(0));
         File file = new File(professionList.get(0).getEmail() + ".vcf");
