@@ -20,17 +20,18 @@ public class Controller {
     public void getAllProfession() throws IOException {
         String url1 = "https://panoramafirm.pl/szukaj?k=hydraulik&l=";
         List<ProfessionDetails> professionList = getProfessionList(url1);
-        createVCard(professionList);
+        String vCard = createVCard(professionList.get(0));
+        System.out.println(vCard);
     }
 
-    private String createVCard(List<ProfessionDetails> professionList) {
-        ProfessionDetails oneProfessionDetails = professionList.get(0);
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("BEGIN:VCARD\n")
-                .append("N:" + oneProfessionDetails.getName())
-                .append("TEL;WORK;VOICE:" + oneProfessionDetails.getPhone());
-
-        return stringBuilder.toString();
+    private String createVCard(ProfessionDetails professionDetails) {
+        return "BEGIN:VCARD\n" +
+                "VERSION:3.0\n" +
+                "N;CHARSET=utf-8:" + professionDetails.getName() + "\n" +
+                "TEL;WORK;VOICE:" + professionDetails.getPhone() + "\n" +
+                "ADR;CHARSET=utf-8;TYPE=WORK,PREF:;;" + professionDetails.getAddress().replace(',', ';') + "\n" +
+                "EMAIL:" + professionDetails.getEmail() + "\n" +
+                "END:VCARD";
     }
 
     private List<ProfessionDetails> getProfessionList(String url1) throws IOException {
