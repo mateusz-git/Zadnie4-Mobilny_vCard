@@ -23,6 +23,10 @@ import java.util.List;
 
 @Controller
 public class ProfessionController {
+    @GetMapping("/searchProfession")
+    public String searchProfession() {
+        return "search";
+    }
 
     @GetMapping("/search")
     public String profession(Model model, @RequestParam(value = "k") String k) throws IOException {
