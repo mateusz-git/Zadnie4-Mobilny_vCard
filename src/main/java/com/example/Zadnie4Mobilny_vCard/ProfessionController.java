@@ -8,8 +8,10 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.*;
 import java.net.URL;
@@ -21,6 +23,17 @@ import java.util.List;
 
 @Controller
 public class ProfessionController {
+
+    @GetMapping("/search")
+    public String profession(Model model, @RequestParam(value = "k") String k) throws IOException {
+        String url1 = "https://panoramafirm.pl/szukaj?k=+" + k + "&l=";
+        List<ProfessionDetails> professionList = getProfessionList(url1);
+        model.addAttribute("profession", professionList);
+        model.addAttribute("k", k);
+
+        return "result";
+    }
+
     @GetMapping("/getvCard/{k}/{email}")
     public ResponseEntity getvCard(@PathVariable String k, @PathVariable String email) throws IOException {
         String url = "https://panoramafirm.pl/szukaj?k=" + k + "&l=";

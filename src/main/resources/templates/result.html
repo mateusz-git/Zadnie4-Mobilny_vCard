@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search results</title>
+</head>
+<body>
+<h1>Search results</h1>
+<tr th:each="person: ${profession}">
+    <td th:text="${person.getName()}"/>
+    <br>
+    <td th:text="${person.getAddress()}"/>
+    <br>
+    <td th:text="${person.getPhone()}"/>
+    <br>
+    <td th:text="${person.getEmail()}"/>
+    <br>
+
+</tr>
+</body>
+</html>
