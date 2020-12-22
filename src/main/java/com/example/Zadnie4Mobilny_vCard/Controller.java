@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
@@ -22,19 +21,25 @@ import java.util.List;
 
 @RestController
 public class Controller {
-    @GetMapping("/getAllProfession/{k}")
-    public ResponseEntity getAllProfession(@PathVariable String k) throws IOException {
-        String url1 = "https://panoramafirm.pl/szukaj?k=" + k + "&l=";
-        List<ProfessionDetails> professionList = getProfessionList(url1);
-        String vCard = createVCard(professionList.get(0));
-        File file = new File(professionList.get(0).getEmail() + ".vcf");
+    @GetMapping("/getvCard/{k}/{email}")
+    public ResponseEntity getvCard(@PathVariable String k, @PathVariable String email) throws IOException {
+        String url = "https://panoramafirm.pl/szukaj?k=" + k + "&l=";
+        List<ProfessionDetails> professionList = getProfessionList(url);
+
+        ProfessionDetails person = professionList.stream()
+                .filter(p -> p.getEmail().equals(email))
+                .findFirst()
+                .orElseThrow();
+
+        String vCard = createVCard(person);
+        File file = new File(person.getEmail() + ".vcf");
         FileOutputStream outputStream = new FileOutputStream(file);
         if (file.exists()) {
             outputStream.write(vCard.getBytes());
             outputStream.flush();
             outputStream.close();
         }
-        Path path = Paths.get(professionList.get(0).getEmail() + ".vcf");
+        Path path = Paths.get(person.getEmail() + ".vcf");
         Resource resource = new UrlResource(path.toUri());
 
         return ResponseEntity.ok()
