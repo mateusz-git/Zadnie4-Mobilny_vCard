@@ -15,7 +15,13 @@
     <br>
     <td th:text="${person.getEmail()}"/>
     <br>
-
+    <form action="#" th:action="@{/getvCard/} + ${k} +@{/}+ ${{person.getEmail()}}" method="get">
+        <button type="submit">
+            <i>Get vCard</i>
+        </button>
+    </form>
+    <br>
+    <p>_________________________________________________________</p><br>
 </tr>
 </body>
 </html>
