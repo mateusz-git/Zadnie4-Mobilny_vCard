@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="content">
+    <div class="center">
+        <h1>Find contact</h1>
+        <h2>Enter profession: </h2>
+        <form th:action="@{/search}" method="get">
+            <input  th:name="k" th:placeholder="Profession" />
+            <div class="clearfix">
+                <button type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
