@@ -29,7 +29,7 @@ public class ProfessionController {
     }
 
     @GetMapping("/search")
-    public String profession(Model model, @RequestParam(value = "k") String k) throws IOException {
+    public String search(Model model, @RequestParam(value = "k") String k) throws IOException {
         String url1 = "https://panoramafirm.pl/szukaj?k=+" + k + "&l=";
         List<ProfessionDetails> professionList = getProfessionList(url1);
         model.addAttribute("profession", professionList);
@@ -49,14 +49,15 @@ public class ProfessionController {
                 .orElseThrow();
 
         String vCard = createVCard(person);
-        File file = new File(person.getEmail() + ".vcf");
+        String filename = person.getEmail() + ".vcf";
+        File file = new File(filename);
         FileOutputStream outputStream = new FileOutputStream(file);
         if (file.exists()) {
             outputStream.write(vCard.getBytes());
             outputStream.flush();
             outputStream.close();
         }
-        Path path = Paths.get(person.getEmail() + ".vcf");
+        Path path = Paths.get(filename);
         Resource resource = new UrlResource(path.toUri());
 
         return ResponseEntity.ok()
@@ -100,10 +101,7 @@ public class ProfessionController {
                     phone.get(i).attr("title"),
                     email.get(i).attr("data-company-email")));
         }
-
-        for (ProfessionDetails professionDetails : professionDetailsList) {
-            System.out.println(professionDetails);
-        }
+        
         return professionDetailsList;
     }
 }
