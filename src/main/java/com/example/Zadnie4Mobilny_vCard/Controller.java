@@ -3,25 +3,41 @@ package com.example.Zadnie4Mobilny_vCard;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class Controller {
     @GetMapping("/getAllProfession")
-    public void getAllProfession() throws IOException {
+    public ResponseEntity getAllProfession() throws IOException {
         String url1 = "https://panoramafirm.pl/szukaj?k=hydraulik&l=";
         List<ProfessionDetails> professionList = getProfessionList(url1);
         String vCard = createVCard(professionList.get(0));
-        System.out.println(vCard);
+        File file = new File(professionList.get(0).getEmail() + ".vcf");
+        FileOutputStream outputStream = new FileOutputStream(file);
+        if (file.exists()) {
+            outputStream.write(vCard.getBytes());
+            outputStream.flush();
+            outputStream.close();
+        }
+        Path path = Paths.get(professionList.get(0).getEmail() + ".vcf");
+        Resource resource = new UrlResource(path.toUri());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename())
+                .body(resource);
     }
 
     private String createVCard(ProfessionDetails professionDetails) {
