@@ -67,8 +67,8 @@ public class ProfessionController {
 
     private String createVCard(ProfessionDetails professionDetails) {
         return "BEGIN:VCARD\n" +
-                "VERSION:3.0\n" +
-                "N;CHARSET=utf-8:" + professionDetails.getName() + "\n" +
+                "VERSION:4.0\n" +
+                "FN;CHARSET=utf-8:" + professionDetails.getName() + "\n" +
                 "TEL;WORK;VOICE:" + professionDetails.getPhone() + "\n" +
                 "ADR;CHARSET=utf-8;TYPE=WORK,PREF:;;" + professionDetails.getAddress().replace(',', ';') + "\n" +
                 "EMAIL:" + professionDetails.getEmail() + "\n" +
@@ -101,7 +101,7 @@ public class ProfessionController {
                     phone.get(i).attr("title"),
                     email.get(i).attr("data-company-email")));
         }
-        
+
         return professionDetailsList;
     }
 }
